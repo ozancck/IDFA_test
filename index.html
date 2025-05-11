@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>IDFA Web Test</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .container {
+            background: #f5f5f5;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        button {
+            background: #007AFF;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #e8e8e8;
+            border-radius: 8px;
+        }
+        
+        .link {
+            display: inline-block;
+            margin: 20px 0;
+            padding: 12px 24px;
+            background: #34C759;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>IDFA Web Test</h1>
+        <p>This simulates a web page that collects IDFA</p>
+        
+        <button onclick="getIDFA()">Get IDFA</button>
+        <button onclick="simulateAdClick()">Simulate Ad Click</button>
+        
+        <div id="result">IDFA: Not retrieved yet</div>
+        
+        <a href="your-app://test?idfa=A1B2C3D4-E5F6-7890-ABCD-123456789012" class="link">
+            Open App with IDFA
+        </a>
+    </div>
+    
+    <script>
+        let currentIDFA = '';
+        
+        function getIDFA() {
+            // Simulated IDFA - in real scenario, you'd use a JavaScript library
+            // that can access IDFA through tracking pixels or SDK
+            currentIDFA = 'A1B2C3D4-E5F6-7890-ABCD-123456789012';
+            
+            document.getElementById('result').innerHTML = `
+                <strong>IDFA:</strong> ${currentIDFA}<br>
+                <small>Note: This is simulated. In real implementation, use Facebook Pixel, Google Analytics, or similar tracking SDK.</small>
+            `;
+        }
+        
+        function simulateAdClick() {
+            getIDFA();
+            
+            // Store in localStorage (simulating server storage)
+            const clickData = {
+                idfa: currentIDFA,
+                timestamp: Date.now(),
+                campaign: 'test_campaign',
+                source: 'web_test'
+            };
+            
+            localStorage.setItem('lastAdClick', JSON.stringify(clickData));
+            
+            alert('Ad click recorded with IDFA: ' + currentIDFA);
+        }
+        
+        // Check for stored click data on page load
+        window.onload = function() {
+            const storedClick = localStorage.getItem('lastAdClick');
+            if (storedClick) {
+                const data = JSON.parse(storedClick);
+                console.log('Previous click data:', data);
+            }
+        }
+    </script>
+</body>
+</html>
